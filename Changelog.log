@@ -1,6 +1,7 @@
 # Version 0.0.0 - 23/04/2024
 - Squelette du projet crée
 
+
 # Version 0.0.1 - 23/04/2024
 
 ## Created
@@ -11,3 +12,22 @@
 ## Updated 
 
     .env : cahngement de la variable globale DATABASE_URL pour permettre l'utilisation d'une bdd mysqlite. 
+
+
+# Version 0.0.2 - 23/04/2024
+
+## Created
+
+    - Le CRUD des entités suivantes: Joueur, Equipe, Jeu.
+
+## Added
+
+    - La propriété "hote" dans l'entité CompositionEquipe.
+    - La propriété "date" dans l'entité Jeu.
+    - Les propriétés "mdp" et "email" dans l'entité Joueur.
+    - les methodes "getPassword","getEmail","eraseCredentials"
+    - template index.html.twig.
+
+## Updated 
+
+    - Ajout du bootstrap dans base.html.twig

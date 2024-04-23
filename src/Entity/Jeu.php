@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\JeuRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: JeuRepository::class)]
@@ -29,6 +30,9 @@ class Jeu
 
     #[ORM\ManyToOne(inversedBy: 'jeux_gagnes')]
     private ?Equipe $vainqueur = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
 
     public function getId(): ?int
     {
@@ -91,6 +95,18 @@ class Jeu
     public function setVainqueur(?Equipe $vainqueur): static
     {
         $this->vainqueur = $vainqueur;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): static
+    {
+        $this->date = $date;
 
         return $this;
     }

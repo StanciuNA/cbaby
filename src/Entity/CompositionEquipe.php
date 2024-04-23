@@ -25,6 +25,9 @@ class CompositionEquipe
     #[ORM\JoinColumn(nullable: false)]
     private ?Equipe $equipe = null;
 
+    #[ORM\Column]
+    private ?bool $hote = null;
+
     public function __construct()
     {
         $this->joueur = new ArrayCollection();
@@ -73,6 +76,18 @@ class CompositionEquipe
     public function setEquipe(?Equipe $equipe): static
     {
         $this->equipe = $equipe;
+
+        return $this;
+    }
+
+    public function isHote(): ?bool
+    {
+        return $this->hote;
+    }
+
+    public function setHote(bool $hote): static
+    {
+        $this->hote = $hote;
 
         return $this;
     }
