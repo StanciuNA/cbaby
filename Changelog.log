@@ -1,0 +1,13 @@
+# Version 0.0.0 - 23/04/2024
+- Squelette du projet crée
+
+# Version 0.0.1 - 23/04/2024
+
+## Created
+
+    - La base de données.
+    - Les entités suivates: Joueur, Equipe, CompositionEquipe, Jeu et leurs repositories.
+
+## Updated 
+
+    .env : cahngement de la variable globale DATABASE_URL pour permettre l'utilisation d'une bdd mysqlite. 
