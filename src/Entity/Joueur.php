@@ -5,10 +5,20 @@ namespace App\Entity;
 use App\Repository\JoueurRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\PreUpdate;
+use Doctrine\ORM\Event\PrePersistEventArgs;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use DateTimeImmutable;
+use DateTimeZone;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 #[ORM\Entity(repositoryClass: JoueurRepository::class)]
+#[HasLifecycleCallbacks]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Joueur implements  UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -35,11 +45,28 @@ class Joueur implements  UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?CompositionEquipe $compositionEquipe = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $mdp = null;
+    #[ORM\Column]
+    private ?string $password = null;
+
+    #[ORM\Column]
+    private array $roles = [];
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
+
+    #[PrePersist]
+    public function setCreatedAtOnCreate(PrePersistEventArgs $eventArgs): void
+    {
+        $now = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
+        $this->date_creation = $now;
+        $this->date_creation = $now;
+    }
+
+    #[PreUpdate]
+    public function setTimestampsOnUpdate(): void
+    {
+        $this->date_creation = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
+    }
 
     public function getId(): ?int
     {
@@ -120,12 +147,12 @@ class Joueur implements  UserInterface, PasswordAuthenticatedUserInterface
 
     public function getPassword(): ?string
     {
-        return $this->mdp;
+        return $this->password;
     }
 
-    public function setMdp(string $mdp): static
+    public function setPassword(string $password): static
     {
-        $this->mdp = $mdp;
+        $this->password = $password;
 
         return $this;
     }
@@ -149,12 +176,14 @@ class Joueur implements  UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): static
     {
         $this->roles = $roles;
 

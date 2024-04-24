@@ -45,4 +45,7 @@ class EquipeRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function getEquipesUtilisateur($utilisateur){
+        // return $this->createQueryBuilder("e")
+    }
 }
