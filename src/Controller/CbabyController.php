@@ -16,10 +16,10 @@ use App\Form\EnregistrerType;
 
 class CbabyController extends AbstractController
 {
-    #[Route(path: '', name: 'index')]
+    #[Route(path: '', name: 'accueil')]
     public function index(): Response
     {
-        $contents = $this->renderView('index.html.twig');
+        $contents = $this->render('index.html.twig');
 
         return new Response(
             $contents
@@ -33,15 +33,15 @@ class CbabyController extends AbstractController
         $form = $this->createForm(EnregistrerType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
             $utilisateur = $form->getData();
             $mdpHashe = $passwordHasher->hashPassword(
                 $utilisateur,
                 $utilisateur->getPassword()
             );
             $equipe = new Equipe();
+            $equipe->setNom($utilisateur->getPseudo());
             $composition_eq = new CompositionEquipe();
-            $utilisateur->setCompositionEquipe($composition_eq);
+            $utilisateur->addComposition($composition_eq);
             $utilisateur->setPassword($mdpHashe);
             $composition_eq->setHote(true);
             $composition_eq->setEquipe($equipe);
@@ -50,7 +50,7 @@ class CbabyController extends AbstractController
             $entityManager->persist($utilisateur);
             $entityManager->flush();
             $security->login($utilisateur);
-            return $this->redirectToRoute('');
+            return $this->redirectToRoute('accueil');
         }
 
         return $this->render('enregistrer.html.twig', [

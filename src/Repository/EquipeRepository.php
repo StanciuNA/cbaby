@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Equipe;
+use App\Entity\Joueur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -45,7 +46,15 @@ class EquipeRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-    public function getEquipesUtilisateur($utilisateur){
-        // return $this->createQueryBuilder("e")
+    public function getEquipeParJoueur(Joueur $joueur)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t') // Sélectionne uniquement des objets Team
+            ->join('t.compositionEquipes', 'tc') // Jointure avec la relation compositionEquipes de Team
+            ->join('tc.joueur', 'j') // Jointure avec la relation joueur de TeamComposition
+            ->where('j = :joueur')
+            ->setParameter('joueur', $joueur)
+            ->getQuery()
+            ->getResult(); // Renvoie les équipes associées au joueur spécifié
     }
 }

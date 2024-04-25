@@ -62,4 +62,14 @@ class JoueurRepository extends ServiceEntityRepository implements PasswordUpgrad
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+       public function tousAvecExeptions($utilisateurs): array
+       {
+           return $this->createQueryBuilder('u')
+               ->andWhere('u.id NOT IN (:utilisateurs)')
+               ->setParameter('utilisateurs', $utilisateurs)
+               ->getQuery()
+               ->getResult()
+           ;
+       }
 }

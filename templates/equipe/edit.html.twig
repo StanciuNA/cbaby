@@ -3,9 +3,14 @@
 {% block title %}Edit Equipe{% endblock %}
 
 {% block body %}
-    <h1>Edit Equipe</h1>
+<div class="container">
+    <div class="container d-flex justify-content-center" style="color:white; margin-bottom:2em;">
+    <div class="row">
+        <h1> Editer l'équipe</h1>
+    </div>
+</div>
 
-    {{ include('equipe/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('equipe/_form.html.twig') }}
 
     <a href="{{ path('app_equipe_index') }}">back to list</a>
 

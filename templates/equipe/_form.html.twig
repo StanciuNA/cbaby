@@ -1,4 +1,43 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="container" style="max-width:50em">
+    <div class="form-group">
+        {{ form_label(form.nom) }}
+        <input
+            name="{{ field_name(form.nom) }}"
+            value="{{ field_value(form.nom) }}"
+            placeholder="{{ field_label(form.nom) }}"
+            class="form-control"
+        >
+    </div>
+
+    {% if nb_membres_equipe == 1 %}
+    <form action="#" method="POST">
+        <label for="pet-select" name="joueur_invite">Inviter un autre joueur:</label>
+        <div class="row">
+            <div class="col">
+            <select class="form-select form-select-sm" aria-label="ajouter_un_joueur" name="joueur_invite">
+                {% for joueur in joueurs %}
+                <option value="{{joueur.getId}}">{{joueur.getPseudo}}</option>
+                {% endfor %}
+            </select>
+            </div>
+            <div class="col">
+                <button type="button" class="btn" id="inviter" style="background-color:#e6cc00; color:white margin-bottom:2em">Inviter</button>
+            </div>
+        </div>
+       
+    </form>
+    {% endif %}
+
+    <div class="row d-flex justify-content-start">
+        <div class="col">
+            <a href="{{ path('app_equipe_index') }}"><button type="button" class="btn btn-danger" href="{{ path('app_equipe_index') }}">Revenir en arrière</button></a>
+            <button type="submit" class="btn" style="background-color:#295E54; color:white">Valider</button>
+        </div>
+        <div class="class_erreurs">
+            {{ form_errors(form.nom) }}
+        </div>
+    </div>
+</div>
+    
 {{ form_end(form) }}

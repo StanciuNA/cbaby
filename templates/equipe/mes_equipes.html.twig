@@ -6,7 +6,7 @@
 <div class="container">
     <div class="container d-flex justify-content-center" style="color:white; margin-bottom:2em;">
     <div class="row">
-        <h1> Toutes les équipes</h1>
+        <h1> Toutes mes équipes</h1>
     </div>
 </div>
     <table class="table">
@@ -14,6 +14,7 @@
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Nom</th>
+                <th scope="col">Editer</th>
             </tr>
         </thead>
         <tbody>
@@ -21,6 +22,11 @@
             <tr>
                 <td>{{ equipe.id }}</td>
                 <td>{{ equipe.nom }}</td>
+                {% for membre in equipe.getCompositionEquipes %}
+                    {% if membre.isHote == "false" %}
+                        <td><a href="{{ path('app_equipe_edit', {'id': equipe.getId}) }}">edit</a></td>
+                    {% endif %}
+                {% endfor %}
             </tr>
         {% else %}
             <tr>
@@ -29,6 +35,9 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="erreurs">
+
+    </div>
 </div>
 
     <a href="{{ path('app_equipe_new') }}">Create new</a>

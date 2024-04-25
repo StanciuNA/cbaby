@@ -50,6 +50,7 @@ class Equipe
         $this->jeux_gagnes = new ArrayCollection();
     }
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -111,7 +112,6 @@ class Equipe
             $this->jeux->add($jeux);
             $jeux->setIdEquipeUn($this);
         }
-
         return $this;
     }
 
