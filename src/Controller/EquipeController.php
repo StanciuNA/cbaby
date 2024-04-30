@@ -74,6 +74,7 @@ class EquipeController extends AbstractController
             array_push($joueurs,$membre->getJoueur());
         }
         $joueurs = $joueurRepository->tousAvecExeptions($joueurs);
+        // dd($joueurs);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,7 +87,8 @@ class EquipeController extends AbstractController
             'equipe' => $equipe,
             'form' => $form,
             'joueurs' => $joueurs,
-            'nb_membres_equipe' => $nb_membres_equipe
+            'nb_membres_equipe' => $nb_membres_equipe,
+            'membres' => $membres
         ]);
     }
 

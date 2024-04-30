@@ -20,12 +20,12 @@ class Notification
     #[ORM\JoinColumn(nullable: false)]
     private ?Joueur $expediteur = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $type = null;
-
     #[ORM\ManyToOne(inversedBy: 'notifs_recues')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Joueur $destinataire = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
 
     public function getId(): ?int
     {
@@ -56,18 +56,6 @@ class Notification
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(?string $type): static
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
     public function getDestinataire(): ?Joueur
     {
         return $this->destinataire;
@@ -76,6 +64,18 @@ class Notification
     public function setDestinataire(?Joueur $destinataire): static
     {
         $this->destinataire = $destinataire;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

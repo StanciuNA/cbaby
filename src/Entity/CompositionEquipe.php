@@ -21,7 +21,7 @@ class CompositionEquipe
     private ?bool $hote = null;
 
     #[ORM\ManyToOne(inversedBy: 'composition')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Joueur $joueur = null;
 
     public function __construct()

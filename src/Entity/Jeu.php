@@ -15,20 +15,21 @@ class Jeu
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'jeux')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Equipe $idEquipeUn = null;
 
     #[ORM\ManyToOne(inversedBy: 'jeuxEq2')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Equipe $idEqipeDeux = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?int $scoreEquipeUn = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?int $scoreEquipeDeux = null;
 
     #[ORM\ManyToOne(inversedBy: 'jeux_gagnes')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Equipe $vainqueur = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

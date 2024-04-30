@@ -9,24 +9,34 @@
             class="form-control"
         >
     </div>
-
-    {% if nb_membres_equipe == 1 %}
-    <form action="#" method="POST">
-        <label for="pet-select" name="joueur_invite">Inviter un autre joueur:</label>
-        <div class="row">
-            <div class="col">
-            <select class="form-select form-select-sm" aria-label="ajouter_un_joueur" name="joueur_invite">
-                {% for joueur in joueurs %}
-                <option value="{{joueur.getId}}">{{joueur.getPseudo}}</option>
-                {% endfor %}
-            </select>
-            </div>
-            <div class="col">
-                <button type="button" class="btn" id="inviter" style="background-color:#e6cc00; color:white margin-bottom:2em">Inviter</button>
-            </div>
+    {# <h1>{{nb_membres_equipe}}</h1> #}
+    <span> Les membres de l'équipe: </span>
+    {% for membre in membres %}
+    <div class="joueur" style="margin:1em">
+      <img src="{{ asset("images/joueur_default.jpg") }}" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+      <div class="d-flex gap-2 w-100 justify-content-between">
+        <div>
+          <h6 class="mb-0">{{membre.getJoueur}}</h6>
         </div>
-       
-    </form>
+      </div>
+    </div>
+    {% endfor %}
+    {% if nb_membres_equipe == 1 %}
+
+    <span for="joueur-select" name="joueur_invite">Inviter un autre joueur:</span>
+    <div class="row" id="liste_inviter">
+        <div class="col">
+        <select class="form-select form-select-sm" aria-label="ajouter_un_joueur" name="joueur_invite" id="joueur_invite_select">
+            {% for joueur in joueurs %}
+            <option value="{{joueur.getId}}">{{joueur.getPseudo}}</option>
+            {% endfor %}
+        </select>
+        </div>
+        <div class="col">
+            <button type="button" class="btn" id="inviter" style="background-color:#e6cc00; color:white margin-bottom:2em">Inviter</button>
+        </div>
+    </div>
+
     {% endif %}
 
     <div class="row d-flex justify-content-start">
@@ -41,3 +51,7 @@
 </div>
     
 {{ form_end(form) }}
+
+{% block javascripts %}
+    <script src ="{{ asset("notifications.js") }}"></script>
+{% endblock %}

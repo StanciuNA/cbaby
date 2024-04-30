@@ -3,13 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Jeu;
-use App\Form\JeuType;
+use App\Entity\Equipe;
+use App\Entity\CompositionEquipe;
 use App\Repository\JeuRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/jeu')]
 class JeuController extends AbstractController
@@ -22,49 +25,44 @@ class JeuController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_jeu_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/nouveau', name: 'app_jeu_show', methods: ['GET'])]
+    public function show(JeuRepository $jeuRepository, Security $security,EntityManagerInterface $entityManager): Response
     {
+
         $jeu = new Jeu();
-        $form = $this->createForm(JeuType::class, $jeu);
-        $form->handleRequest($request);
+        $jeu->setDate(new \DateTime());
+        // $hote = $security->getUser();
+        // $eq1 = new Equipe();
+        // $compEq1 = new CompositionEquipe();
+        // $compEq1->isHote();
+        // $compEq1->setEquipe($eq1);
+        // $compEq1->setJoueur($hote);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($jeu);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_jeu_index', [], Response::HTTP_SEE_OTHER);
-        }
+        // $compEq2 = new CompositionEquipe();
+        // $compEq3 = new CompositionEquipe();
+        // $compEq4 = new CompositionEquipe();
+        // $eq2 = new Equipe();
+        $entityManager->persist($jeu);
+        $entityManager->flush();
 
         return $this->render('jeu/new.html.twig', [
-            'jeu' => $jeu,
-            'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_jeu_show', methods: ['GET'])]
-    public function show(Jeu $jeu): Response
+    #[Route('/{id}/edit', name: 'app_jeu_edit', methods: ['GET'])]
+    public function edit(Jeu $jeu, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('jeu/show.html.twig', [
-            'jeu' => $jeu,
-        ]);
-    }
+        // $form = $this->createForm(JeuType::class, $jeu);
+        // $form->handleRequest($request);
 
-    #[Route('/{id}/edit', name: 'app_jeu_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Jeu $jeu, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(JeuType::class, $jeu);
-        $form->handleRequest($request);
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $entityManager->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_jeu_index', [], Response::HTTP_SEE_OTHER);
-        }
+        //     return $this->redirectToRoute('app_jeu_index', [], Response::HTTP_SEE_OTHER);
+        // }
 
         return $this->render('jeu/edit.html.twig', [
             'jeu' => $jeu,
-            'form' => $form,
         ]);
     }
 
@@ -77,5 +75,10 @@ class JeuController extends AbstractController
         }
 
         return $this->redirectToRoute('app_jeu_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/ajout_equipe')]
+    public function ajoutEquipePartide(Request $request,EntityManagerInterface $entityManager){
+        return new JsonResponse();
     }
 }

@@ -12,18 +12,20 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\Equipe;
 use App\Entity\CompositionEquipe;
 use App\Form\EnregistrerType;
+use App\Repository\JeuRepository;
 
 
 class CbabyController extends AbstractController
 {
     #[Route(path: '', name: 'accueil')]
-    public function index(): Response
+    public function index(JeuRepository $jeuRepository): Response
     {
-        $contents = $this->render('index.html.twig');
 
-        return new Response(
-            $contents
-        );
+        $nb_match = count($jeuRepository->findAll())+1;
+        // dd($nb_match);
+        return $this->render('base.html.twig', [
+            'nb_match' => $nb_match,
+        ]);
     }
 
     #[Route('/enregistrer', name: 'app_register')]

@@ -91,6 +91,10 @@ class Joueur implements  UserInterface, PasswordAuthenticatedUserInterface
         $this->date_creation = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
     }
 
+    public function __toString()
+    {
+        return $this->getPseudo();
+    }
     public function getId(): ?int
     {
         return $this->id;
