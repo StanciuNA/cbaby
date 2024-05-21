@@ -36,13 +36,18 @@ class NotificationRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Notification
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+   public function findOneBySomeFields($expediteur,$destinataire,$entite,$type): ?Notification
+   {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.expediteur = :expediteur')
+            ->andWhere('n.destinataire = :destinataire')
+            ->andWhere('n.data like %:entite')
+            ->andWhere('n.type = :type')
+            ->setParameter('expediteur', $expediteur)
+            ->setParameter('destinataire', $destinataire)
+            ->setParameter('type', $type)
+            ->setParameter('entite', $entite)
+            ->getQuery()
+            ->getOneOrNullResult();
+   }
 }

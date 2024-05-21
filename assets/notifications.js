@@ -20,7 +20,7 @@ function envoyerInvitationEquipe(){
             })
             .then(responseData => {
                 // Handle the response from the Symfony controller
-                console.log(responseData);
+                alert(responseData.data);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);

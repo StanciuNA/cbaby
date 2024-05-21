@@ -22,7 +22,6 @@ class CbabyController extends AbstractController
     {
 
         $nb_match = count($jeuRepository->findAll())+1;
-        // dd($nb_match);
         return $this->render('base.html.twig', [
             'nb_match' => $nb_match,
         ]);
@@ -40,15 +39,8 @@ class CbabyController extends AbstractController
                 $utilisateur,
                 $utilisateur->getPassword()
             );
-            $equipe = new Equipe();
-            $equipe->setNom($utilisateur->getPseudo());
-            $composition_eq = new CompositionEquipe();
-            $utilisateur->addComposition($composition_eq);
+
             $utilisateur->setPassword($mdpHashe);
-            $composition_eq->setHote(true);
-            $composition_eq->setEquipe($equipe);
-            $entityManager->persist($equipe);
-            $entityManager->persist($composition_eq);
             $entityManager->persist($utilisateur);
             $entityManager->flush();
             $security->login($utilisateur);

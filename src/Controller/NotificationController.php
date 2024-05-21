@@ -32,10 +32,9 @@ class NotificationController extends AbstractController {
         $notification->setType($type);
         $entityManager->persist($notification);
 
-        // actually executes the queries (i.e. the INSERT query)
         $entityManager->flush();
 
-        return new JsonResponse();
+        return new JsonResponse(["data"=>"test"]);
     }
     
 }

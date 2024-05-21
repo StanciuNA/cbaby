@@ -2,6 +2,10 @@
 
 {% block title %}New Jeu{% endblock %}
 
+{% block stylesheets %}
+<link href="{{ asset("styles/jeu.css") }}" rel="stylesheet" />
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="container d-flex justify-content-center" style="color:white; margin-bottom:2em;">
@@ -9,19 +13,59 @@
             <h1> Jeu </h1>
         </div>
     </div>
+    <div id="popup" class="popup">
+        <div class="popup-contenu">            
+            <div class="container">
+                <div class="col">
+                    <span class="modal-titre">Chercher un joueur</span>
+                    <div class="row d-flex flex-nowrap">
+                        <input type="text" class="inp_recherche_joueur">
+                    </div>
+                    <div class="lst_joueurs ">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger" id="fermer">Fermer</button>
+            </div>
+        </div>
+    </div>
     
-    <div class="div">
+    <div class="container" id="jeu_conteneur">
         <div class="row">
-            <div class="col"> </div>
+            <div class="col" id="e1">
+                <div class="joueur" id="j1">
+                     <img src="{{ asset("images/joueur_default.jpg") }}" alt="Image de profil">
+                     <div class="info">
+                        <span id="nom"> Joueur 1</span>
+                        <span class="id_joueur" data-value="1" > id : 1</span>
+                     </div>
+                </div>
+                <div class="joueur" id="j2">
+                    <div class="container" id="ajt" data-toggle="modal" data-target="#exampleModal">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col" id="score"> 
+            </div>
+            
+            <div class="col" id="e2">
+                <div class="joueur" id="j3">
+                    <div class="container" id="ajt">
+                    </div>
+                </div>
+                <div class="joueur" id="j4">
+                    <div class="container" id="ajt">
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="row"> 
-            <div class="col"> </div>
-        </div>
-        
     </div>
 
     {{ include('jeu/_form.html.twig') }}
 
     <a href="{{ path('app_jeu_index') }}">back to list</a>
+{% endblock %}
+
+{% block javascripts %}
+    <script src ="{{ asset("js/jeu.js") }}"></script>
 {% endblock %}

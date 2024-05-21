@@ -13,8 +13,6 @@ class Notification
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?array $data = null;
 
     #[ORM\ManyToOne(inversedBy: 'notifs_envoyes')]
     #[ORM\JoinColumn(nullable: false)]
@@ -27,21 +25,15 @@ class Notification
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $message = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $data = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getData(): ?array
-    {
-        return $this->data;
-    }
-
-    public function setData(?array $data): static
-    {
-        $this->data = $data;
-
-        return $this;
     }
 
     public function getExpediteur(): ?Joueur
@@ -76,6 +68,30 @@ class Notification
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    public function setMessage(?string $message): static
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    public function getData(): ?array
+    {
+        return $this->data;
+    }
+
+    public function setData(?array $data): static
+    {
+        $this->data = $data;
 
         return $this;
     }

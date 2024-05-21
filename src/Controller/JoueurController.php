@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/joueur')]
 class JoueurController extends AbstractController
@@ -68,14 +70,32 @@ class JoueurController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_joueur_delete', methods: ['POST'])]
-    public function delete(Request $request, Joueur $joueur, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$joueur->getId(), $request->getPayload()->get('_token'))) {
-            $entityManager->remove($joueur);
-            $entityManager->flush();
+    #[Route('/chercher', name: 'app_joueur_chercher', methods: ['GET', 'POST'])]
+    public function chercheJoueurs(Request $request,Security $security,EntityManagerInterface $entityManager){
+        $jsonData = $request->getContent();
+        $data = json_decode($jsonData, true);
+        $lst_joueurs = $data['lst_joueurs'];
+        $pseudo = $data['lib_joueur'];
+        $repository = $entityManager->getRepository(Joueur::class);
+        
+        $queryBuilder = $repository->createQueryBuilder('j')
+            ->where('j.pseudo LIKE :pseudo')
+            ->andWhere('j.id NOT IN (:lst_joueurs)')
+            ->setParameter('pseudo', "%$pseudo%")
+            ->setParameter('lst_joueurs', $lst_joueurs);
+
+        $requete = $queryBuilder->getQuery();
+        $joueurs = $requete->getResult();
+        $formattedJoueurs = [];
+        foreach ($joueurs as $joueur) {
+            $formattedJoueurs[] = [
+                'id' => $joueur->getId(),
+                'pseudo' => $joueur->getPseudo(),
+            ];
         }
 
-        return $this->redirectToRoute('app_joueur_index', [], Response::HTTP_SEE_OTHER);
+
+
+        return new JsonResponse(["data"=>$formattedJoueurs]);
     }
 }
