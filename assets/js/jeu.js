@@ -18,36 +18,41 @@ document.addEventListener('DOMContentLoaded', function() {
                     let joueursEnLobby = document.getElementsByClassName("id_joueur");
                     let lstIdJoueurs = [];
                       for (var joueur of joueursEnLobby) {
-                          lstIdJoueurs.push(joueur.getAttribute('data-value'));
+                        lstIdJoueurs.push(joueur.getAttribute('data-value'));
                       }
                       try {
-                          let input_value = input.value;
-                          let joueurs = await chercheJoueur(lstIdJoueurs,input_value);
-                          let lst_joueurs = document.getElementsByClassName("lst_joueurs")[0];
-                          lst_joueurs.innerHTML = '';
-                          console.log(input_value);
-                          for (joueur of joueurs){
+                        let input_value = input.value;
+                        let joueurs = await chercheJoueur(lstIdJoueurs,input_value);
+                        let lst_joueurs = document.getElementsByClassName("lst_joueurs")[0];
+                        lst_joueurs.innerHTML = '';
+                        if (input_value.length != 0 && joueurs.length != 0){
+                            for (joueur of joueurs){
+                                const div = document.createElement('div');
+                                div.classList.add('inv_joureur');
+
+                                const span = document.createElement('span');
+                                span.classList.add('inv_nom');
+                                span.textContent = joueur.pseudo;
+
+                                const button = document.createElement('button');
+                                button.type = 'button';
+                                button.classList.add('btn', 'btn-outline-success');
+                                button.textContent = 'Inviter';
+
+                                div.appendChild(span);
+                                div.appendChild(button);
+                                lst_joueurs.appendChild(div);
+                            }
+                        }
+                        else{
                             const div = document.createElement('div');
                             div.classList.add('inv_joureur');
-
                             const span = document.createElement('span');
                             span.classList.add('inv_nom');
-                            span.textContent = joueur.pseudo;
-                            // console.log(joueur['pseudo']);
-
-                            const button = document.createElement('button');
-                            button.type = 'button';
-                            button.classList.add('btn', 'btn-outline-success');
-                            button.textContent = 'Inviter';
-
+                            span.textContent = "Aucun joueur trouvée";
                             div.appendChild(span);
-                            div.appendChild(button);
                             lst_joueurs.appendChild(div);
-
-                            console.log(joueur);
-                          }
-                          input_value = "";
-
+                        }
                       } catch (error) {
                           console.error('Error fetching players:', error);
                       }
