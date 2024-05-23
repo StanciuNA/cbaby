@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\Equipe;
 use App\Entity\CompositionEquipe;
+use App\Entity\Notification;
 use App\Form\EnregistrerType;
 use App\Repository\JeuRepository;
 
@@ -18,9 +19,8 @@ use App\Repository\JeuRepository;
 class CbabyController extends AbstractController
 {
     #[Route(path: '', name: 'accueil')]
-    public function index(JeuRepository $jeuRepository): Response
+    public function index(JeuRepository $jeuRepository,Security $security,EntityManagerInterface $entityManager): Response
     {
-
         $nb_match = count($jeuRepository->findAll())+1;
         return $this->render('base.html.twig', [
             'nb_match' => $nb_match,

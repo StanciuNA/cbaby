@@ -57,10 +57,30 @@ class NotificationController extends AbstractController {
         return new JsonResponse(["data"=>$data["joueur"]]);
     }
 
-    #[Route('/notifications',methods: ['GET', 'POST'])]
-    public function Notifications(Request $request,Security $security,EntityManagerInterface $entityManager){
-        $utilisateur = $security->getUser();
+    #[Route('/notifications',name:"app_notif_liste",methods: ['GET', 'POST'])]
+    public function Notifications(Security $security,EntityManagerInterface $entityManager){
+        $destinataire = $security->getUser();
+        $repository = $entityManager->getRepository(Notification::class);
+        
+        $queryBuilder = $repository->createQueryBuilder('j')
+            ->where('j.destinataire = :destinataire')
+            ->setParameter('destinataire', $destinataire);
+        $requete = $queryBuilder->getQuery();
+        $notifications = $requete->getResult();
+        return $this->render('notification/show.html.twig', [
+            'notifications' => $notifications,
+        ]);
     }
+
+    #[Route('/notification/accepter/{id}',name:"app_notif_accept",methods: ['GET', 'POST'])]
+    public function accepterNotification(Security $security,EntityManagerInterface $entityManager,$id){
+        $destinataire = $security->getUser();
+        $notification = $entityManager->getRepository(Notification::class)->find($id);
+        dd($notification);
+        return new JsonResponse(["data"=>$notification]);
+    }
+
+
 }
 
 

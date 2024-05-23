@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+
+{% block body %}
+<div class="container">
+    <div class="container d-flex justify-content-center" style="color:white; margin-bottom:2em;">
+        <div class="row">
+            <h1> Notifications </h1>
+        </div>
+    </div>
+</div>
+{% for notification in notifications %}
+<div class="container">
+    <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">#</th>
+        <th scope="col">Expediteur</th>
+        <th scope="col">Type</th>
+        <th scope="col">Accepter</th>
+        <th scope="col">Refuser</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <th scope="row">1</th>
+        <td>{{notification.getData["joueur"]["pseudo"]}}</td>
+        <td>{{notification.getType}}</td>
+        <td><a href="/notification/accepter/{{notification.getId}}"><button type="button" class="btn btn-success btn-sm">Accepter</button></a></td>
+        <td><a href="#"><button type="button" class="btn btn-danger btn-sm">Refuser</button></a></td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+    
+    
+
+{% endfor %}
+{% endblock %}
