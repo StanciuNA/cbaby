@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
       for (var btn of btns) {
           var btnContent = btn.getElementsByClassName("container");
           for (var elem of btnContent) {
-              elem.addEventListener("click", function(event) {
+              let equipe = elem.parentElement.parentElement;
+              elem.addEventListener("click", function() {
                   modal.style.display = "block";
                   let input = document.getElementsByClassName("inp_recherche_joueur")[0];
                   input.addEventListener("input", async function() {
@@ -39,8 +40,15 @@ document.addEventListener('DOMContentLoaded', function() {
                                 button.classList.add('btn', 'btn-outline-success');
                                 button.textContent = 'Inviter';
 
+                                const div_jeu = document.querySelector('.js-match');
+                                const jeu_infos = JSON.parse(div_jeu.getAttribute('data-user'));
+                                button.addEventListener('click',async function (){
+                                    await inviter(joueur,jeu_infos,equipe.id);
+                                });
+
                                 div.appendChild(span);
                                 div.appendChild(button);
+
                                 lst_joueurs.appendChild(div);
                             }
                         }
@@ -84,7 +92,8 @@ document.addEventListener('DOMContentLoaded', function() {
           method: "POST",
           body: JSON.stringify({
               lst_joueurs: lst_joueurs,
-              lib_joueur: lib_joueur
+              lib_joueur: lib_joueur,
+              accepte: false
           }),
           headers: {
               "Content-type": "application/json; charset=UTF-8"
@@ -97,5 +106,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const responseData = await response.json();
       return responseData.data;
+  }
+
+  async function inviter(joueur,id_match,id_equipe){
+    const response = await fetch("/inviter/jeu", {
+        method: "POST",
+        body: JSON.stringify({
+            joueur: joueur,
+            id_match: id_match,
+            id_equipe: id_equipe
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Il y a une erreur sur le serveur');
+    }
+
+    const responseData = await response.json();
+    console.log(responseData.data);
+    return responseData.data;
   }
 });

@@ -93,9 +93,6 @@ class JoueurController extends AbstractController
                 'pseudo' => $joueur->getPseudo(),
             ];
         }
-
-
-
         return new JsonResponse(["data"=>$formattedJoueurs]);
     }
 }

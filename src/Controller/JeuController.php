@@ -31,21 +31,17 @@ class JeuController extends AbstractController
 
         $jeu = new Jeu();
         $jeu->setDate(new \DateTime());
-        // $hote = $security->getUser();
-        // $eq1 = new Equipe();
-        // $compEq1 = new CompositionEquipe();
-        // $compEq1->isHote();
-        // $compEq1->setEquipe($eq1);
-        // $compEq1->setJoueur($hote);
-
-        // $compEq2 = new CompositionEquipe();
-        // $compEq3 = new CompositionEquipe();
-        // $compEq4 = new CompositionEquipe();
-        // $eq2 = new Equipe();
+        $hote = $security->getUser();
+        $eq1 = new Equipe();
+        $compEq1 = new CompositionEquipe();
+        $compEq1->isHote();
+        $compEq1->setEquipe($eq1);
+        $compEq1->setJoueur($hote);
         $entityManager->persist($jeu);
         $entityManager->flush();
 
-        return $this->render('jeu/new.html.twig', [
+        return $this->render('jeu/new.html.twig',
+                            ['jeu' => $jeu
         ]);
     }
 
